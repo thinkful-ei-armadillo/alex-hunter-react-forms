@@ -51,7 +51,7 @@ class App extends React.Component {
 
     return (
       <>
-      <Route path="/note/:note-id" render={(props) => {
+      <Route path="/note/:noteId" render={(props) => {
         return (
           <>
           <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
@@ -59,7 +59,7 @@ class App extends React.Component {
           </>
         )
       }} />
-      <Route path="/folder/:folder-id" render={() => {
+      <Route path="/folder/:folderId" render={() => {
         return <FolderList folders={this.state.folders} />
       }} />
       <Route exact path="/" render={(props) => {
@@ -86,14 +86,5 @@ class App extends React.Component {
     );
   }
 }
-
-//routes we have:
-  //Main section
-    // '/' = all notes
-    // '/folder/:folder-id' = only notes in that folder, so we apply a filter
-    // '/note/:note-id' = only that specific note
-  //Sidebar section
-    // '/' = all folders and add folder button
-    // '/note/:note-id' = go back button and folder name
 
 export default App;
