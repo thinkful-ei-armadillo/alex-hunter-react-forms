@@ -1,9 +1,8 @@
 import React from "react";
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import FolderList from './components/FolderList/FolderList';
 import NoteList from './components/NoteList/NoteList';
 import Note from './components/Note/Note';
-import Sidebar from './components/Sidebar/Sidebar';
 import Store from './dummy-store';
 
 class App extends React.Component {
@@ -55,7 +54,7 @@ class App extends React.Component {
         return (
           <>
           <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
-          <button>Go Back</button>
+          <button onClick={() => props.history.goBack()}>Go Back</button>
           </>
         )
       }} />
@@ -73,7 +72,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <header role="banner">
-
+          <Link to='/'>Noteful</Link>
         </header>
         <nav role="navigation">
           {this.renderNavigationComponent()}

@@ -16,3 +16,43 @@ code {
 ul {
   list-style: none;
 }
+
+header {
+  display: flex;
+  width: 100%;
+  background-color: #0e0e11;
+  position:fixed;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+header a {
+  text-decoration: none;
+  color: white;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  position: fixed;
+  left: 0;
+  top: 100px;
+  width: 250px;
+  height: calc(100% - 100px);
+  background-color: #151317;
+}
+
+main {
+  padding-left: 300px;
+  padding-top: 125px;
+  padding: 125px 300px;
+}
+
+
