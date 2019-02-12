@@ -17,25 +17,54 @@ class App extends React.Component {
     return this.state.notes.find(note => note.id === noteId);
   }
 
+  getFolderNameFromNoteId = (noteId) => {
+    const note = this.state.notes.find((n) => n.id === noteId );
+    const folder = this.state.folders.find((f) => f.id === note.folderId);
+
+    return folder.name;
+  }
+
   renderMainComponent = () => {
     return (
       <>
-        <Route 
-          exact path="/" 
+        <Route
+          exact path="/"
           render={() => <NoteList notes={this.state.notes} />}
         />
-        <Route 
-          path="/folder/:folderId" 
+        <Route
+          path="/folder/:folderId"
           render={(props) => {
             return <NoteList notes={this.getFolderNotes(props.match.params.folderId)} />
           }}
         />
-        <Route 
+        <Route
           path="/note/:noteId"
           render={(props) => {
             return <Note note={this.getNoteById(props.match.params.noteId)} full={true} />
           }}
         />
+      </>
+    );
+  }
+
+  renderNavigationComponent = () => {
+
+    return (
+      <>
+      <Route path="/note/:note-id" render={(props) => {
+        return (
+          <>
+          <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
+          <button>Go Back</button>
+          </>
+        )
+      }} />
+      <Route path="/folder/:folder-id" render={() => {
+        return <FolderList folders={this.state.folders} />
+      }} />
+      <Route exact path="/" render={(props) => {
+        return <FolderList folders={this.state.folders} />
+      }} />
       </>
     );
   }
@@ -46,12 +75,13 @@ class App extends React.Component {
         <header role="banner">
 
         </header>
+        <nav role="navigation">
+          {this.renderNavigationComponent()}
+        </nav>
         <main role="main">
           {this.renderMainComponent()}
         </main>
-        <nav role="navigation">
 
-        </nav>
       </React.Fragment>
     );
   }
