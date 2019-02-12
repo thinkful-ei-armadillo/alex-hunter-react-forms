@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Note(props) {
 
   let jsxNotePreview = (
     <div className="note" data-note-id={props.note.id} data-folder-id={props.note.folderId}>
-      <h3>{props.note.name}</h3>
+      <h3><Link to={`/note/${props.note.id}`} >{props.note.name}</Link></h3>
       <p>{props.note.modified}</p>
     </div>
   );
