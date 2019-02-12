@@ -17,7 +17,7 @@ function FolderList (props) {
       <ul>
         {jsxFolders}
       </ul>
-      <button>Add Folder</button>
+      <button id="AddFolder">Add Folder</button>
     </React.Fragment>
   );
 }

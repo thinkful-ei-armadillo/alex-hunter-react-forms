@@ -71,7 +71,7 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <header role="banner">
+        <header id="SiteTitle" role="banner">
           <Link to='/'>Noteful</Link>
         </header>
         <nav role="navigation">

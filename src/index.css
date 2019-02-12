@@ -17,7 +17,7 @@ ul {
   list-style: none;
 }
 
-header {
+header#SiteTitle {
   display: flex;
   width: 100%;
   background-color: #0e0e11;
@@ -32,13 +32,14 @@ header {
   font-weight: bold;
 }
 
-header a {
+header#SiteTitle a {
   text-decoration: none;
   color: white;
 }
 
 nav {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   align-items: flex-start;
   position: fixed;
@@ -47,6 +48,7 @@ nav {
   width: 250px;
   height: calc(100% - 100px);
   background-color: #151317;
+  color: #ffffff;
 }
 
 main {
@@ -55,4 +57,44 @@ main {
   padding: 125px 300px;
 }
 
+.note {
+  background-color: lightgrey;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 24px;
+}
 
+.note h3 {
+  margin: 0;
+}
+
+.note .delete {
+
+
+  border: 0;
+  background-color: darkgray;
+  outline: none;
+}
+
+.note .delete:hover {
+  background-color: darkred;
+  color: white;
+}
+
+button {
+  cursor: pointer;
+}
+
+a, a:link, a:visited, a:active {
+  text-decoration: none;
+  color:blue;
+}
+
+a:hover {
+  text-decoration: none;
+  color:lightcoral;
+}
+
+#AddFolder {
+  margin-left: 40px;
+}

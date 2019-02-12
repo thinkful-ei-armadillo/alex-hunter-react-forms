@@ -7,7 +7,7 @@ function NoteList (props) {
 
     return (
       <li id={note.id} key={note.id}>
-        <Note note={note} full={true} />
+        <Note note={note} />
       </li>
     );
   });

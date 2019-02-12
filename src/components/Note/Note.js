@@ -7,6 +7,7 @@ function Note(props) {
     <div className="note" data-note-id={props.note.id} data-folder-id={props.note.folderId}>
       <h3><Link to={`/note/${props.note.id}`} >{props.note.name}</Link></h3>
       <p>{props.note.modified}</p>
+      <button class="delete">Delete</button>
     </div>
   );
 
