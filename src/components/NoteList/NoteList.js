@@ -1,24 +1,29 @@
 import React from 'react';
 import Note from '../Note/Note';
+import NotesContext from '../../NotesContext';
 
-function NoteList (props) {
-
-  const jsxNotes = props.notes.map((note) => {
-
-    return (
-      <li id={note.id} key={note.id}>
-        <Note note={note} />
-      </li>
-    );
-  });
+function NoteList(props) {
+  const jsxNotes = (notes) => {
+    return notes.map((note) => {
+      return (
+        <li id={note.id} key={note.id}>
+          <Note note={note} />
+        </li>
+      );
+    });
+  };
 
   return (
-    <React.Fragment>
-      <ul>
-        {jsxNotes}
-      </ul>
-      <button>Add Note</button>
-    </React.Fragment>
+    <NotesContext.Consumer>
+      {({notes}) => (
+        <>
+          <ul>
+            {jsxNotes(notes)}
+          </ul>
+          <button>Add Note</button>
+        </>
+      )}
+    </NotesContext.Consumer>
   );
 }
 

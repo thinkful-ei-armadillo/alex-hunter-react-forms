@@ -85,14 +85,21 @@ button {
   cursor: pointer;
 }
 
+main a {
+  color: #151316;
+}
+
 a, a:link, a:visited, a:active {
   text-decoration: none;
-  color:blue;
 }
 
 a:hover {
   text-decoration: none;
   color:lightcoral;
+}
+
+nav ul li a {
+  color: white;
 }
 
 #AddFolder {

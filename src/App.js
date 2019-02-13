@@ -4,6 +4,7 @@ import FolderList from './components/FolderList/FolderList';
 import NoteList from './components/NoteList/NoteList';
 import Note from './components/Note/Note';
 import Store from './dummy-store';
+import NotesContext from './NotesContext';
 
 class App extends React.Component {
   state = Store;
@@ -28,12 +29,23 @@ class App extends React.Component {
       <>
         <Route
           exact path="/"
-          render={() => <NoteList notes={this.state.notes} />}
+          render={() => {
+            return (
+              <NotesContext.Provider
+                value={{ notes: this.state.notes }}>
+                <NoteList />
+              </NotesContext.Provider>
+            )}}
         />
         <Route
           path="/folder/:folderId"
           render={(props) => {
-            return <NoteList notes={this.getFolderNotes(props.match.params.folderId)} />
+            return (
+              <NotesContext.Provider
+                value={{ notes: this.getFolderNotes(props.match.params.folderId) }}>
+                <NoteList />
+              </NotesContext.Provider>
+            );
           }}
         />
         <Route
@@ -47,23 +59,22 @@ class App extends React.Component {
   }
 
   renderNavigationComponent = () => {
-
     return (
       <>
-      <Route path="/note/:noteId" render={(props) => {
-        return (
-          <>
-          <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
-          <button onClick={() => props.history.goBack()}>Go Back</button>
-          </>
-        )
-      }} />
-      <Route path="/folder/:folderId" render={() => {
-        return <FolderList folders={this.state.folders} />
-      }} />
-      <Route exact path="/" render={(props) => {
-        return <FolderList folders={this.state.folders} />
-      }} />
+        <Route path="/note/:noteId" render={(props) => {
+          return (
+            <>
+              <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
+              <button onClick={() => props.history.goBack()}>Go Back</button>
+            </>
+          )
+        }} />
+        <Route path="/folder/:folderId" render={() => {
+          return <FolderList folders={this.state.folders} />
+        }} />
+        <Route exact path="/" render={(props) => {
+          return <FolderList folders={this.state.folders} />
+        }} />
       </>
     );
   }
