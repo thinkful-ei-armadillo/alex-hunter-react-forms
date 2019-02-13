@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Link } from 'react-router-dom';
-import FolderList from './components/FolderList/FolderList';
-import NoteList from './components/NoteList/NoteList';
-import NoteFull from './components/Note/NoteFull';
-import NoteNav from './components/FolderList/NoteNav';
+import NoteList from './components/Main/NoteList';
+import NoteFull from './components/Main/NoteFull';
+import FolderList from './components/Nav/FolderList';
+import NoteNav from './components/Nav/NoteNav';
 import AppContext from './AppContext';
 
 class App extends React.Component {
