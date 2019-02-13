@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import AppContext from '../../AppContext';
+import Note from '../Note/Note';
 
 class NoteFull extends React.Component {
     static defaultProps = {
@@ -16,11 +16,7 @@ class NoteFull extends React.Component {
         const note = notes.find(note => note.id === noteId) || {};
         return (
             <>
-                <div className="note">
-                    <h3><Link to={`/note/${note.id}`} >{note.name}</Link></h3>
-                    <p>{note.modified}</p>
-                    <button className="delete">Delete</button>
-                </div>
+                <Note id={note.id} name={note.name} modified={note.modified} />
                 <p>{note.description}</p>
             </>
         );

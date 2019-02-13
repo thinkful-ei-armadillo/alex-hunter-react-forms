@@ -45,6 +45,12 @@ class App extends React.Component {
     })
   }
 
+  handleDelete = (noteId) => {
+    this.setState({
+      notes: this.state.notes.filter(note => note.id !== noteId),
+    });
+  }
+
   renderMainComponent = () => {
     return (
       <>
@@ -85,7 +91,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <AppContext.Provider value={ {folders: this.state.folders, notes: this.state.notes} }>
+      <AppContext.Provider value={ {folders: this.state.folders, notes: this.state.notes, handleDelete: this.handleDelete } }>
         <header id="SiteTitle" role="banner">
           <Link to='/'>Noteful</Link>
         </header>
