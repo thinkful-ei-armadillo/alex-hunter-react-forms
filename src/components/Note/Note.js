@@ -1,26 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NoteContext from '../../NoteContext';
 
-function Note(props) {
+function Note() {
 
-  let jsxNotePreview = (
-    <div className="note" data-note-id={props.note.id} data-folder-id={props.note.folderId}>
-      <h3><Link to={`/note/${props.note.id}`} >{props.note.name}</Link></h3>
-      <p>{props.note.modified}</p>
-      <button class="delete">Delete</button>
-    </div>
-  );
+  const jsxNotePreview = (note, full) => {
+    return (
+      <>
+        <div className="note" data-note-id={note.id} data-folder-id={note.folderId}>
+          <h3><Link to={`/note/${note.id}`} >{note.name}</Link></h3>
+          <p>{note.modified}</p>
+          <button class="delete">Delete</button>
+        </div>
+        {full && <p>{note.content}</p>}
+      </>
+    )};
 
-  let jsxNoteContent = (
-    <p>{props.note.content}</p>
-  );
 
 
   return (
-    <React.Fragment>
-      {jsxNotePreview}
-      {props.full && jsxNoteContent}
-    </React.Fragment>
+    <NoteContext.Consumer>
+      {({note, full}) => (
+        <>
+          {jsxNotePreview(note, full)}
+        </>
+      )}
+    </NoteContext.Consumer>
   );
 }
 

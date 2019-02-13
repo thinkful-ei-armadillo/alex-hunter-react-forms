@@ -5,6 +5,7 @@ import NoteList from './components/NoteList/NoteList';
 import Note from './components/Note/Note';
 import Store from './dummy-store';
 import NotesContext from './NotesContext';
+import NoteContext from './NoteContext';
 
 class App extends React.Component {
   state = Store;
@@ -51,8 +52,13 @@ class App extends React.Component {
         <Route
           path="/note/:noteId"
           render={(props) => {
-            return <Note note={this.getNoteById(props.match.params.noteId)} full={true} />
-          }}
+            return (
+            <NoteContext.Provider
+              value = {{note : this.getNoteById(props.match.params.noteId), full : true}}>
+              <Note />
+            </NoteContext.Provider>
+            );
+        }}
         />
       </>
     );

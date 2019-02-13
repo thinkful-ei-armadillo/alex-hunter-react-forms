@@ -1,15 +1,19 @@
 import React from 'react';
 import Note from '../Note/Note';
 import NotesContext from '../../NotesContext';
+import NoteContext from '../../NoteContext';
 
 function NoteList(props) {
   const jsxNotes = (notes) => {
     return notes.map((note) => {
-      return (
-        <li id={note.id} key={note.id}>
-          <Note note={note} />
-        </li>
-      );
+        return (
+          <NoteContext.Provider>
+            <li id={note.id} key={note.id}>
+              <Note note={note} />
+            </li>
+          </NoteContext.Provider> 
+        );
+
     });
   };
 
