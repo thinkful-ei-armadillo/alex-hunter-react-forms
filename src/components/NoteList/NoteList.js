@@ -1,38 +1,46 @@
 import React from 'react';
 import Note from '../Note/Note';
-import NotesContext from '../../NotesContext';
-import NoteContext from '../../NoteContext';
+import AppContext from '../../AppContext';
 
-function NoteList(props) {
-  const jsxNotes = (notes) => {
+class NoteList extends React.Component {
+  static defaultProps = {
+    match: {
+      params: {}
+    }
+  }
+  static contextType = AppContext;
+
+  getFolderNotes = (notes, folderId) => {
+    if (!folderId) {
+      return notes;
+    } else {
+      return this.context.notes.filter(note => note.folderId === folderId);
+    }
+  }
+
+  jsxNotes = (notes) => {
     return notes.map((note) => {
         return (
-          <NoteContext.Provider>
-            <li id={note.id} key={note.id}>
-              <Note note={note} />
+            <li key={note.id} id={note.id}>
+              <Note id={note.id} name={note.name} modified={note.modified} />
             </li>
-          </NoteContext.Provider> 
         );
-
     });
   };
 
-  return (
-    <NotesContext.Consumer>
-      {({notes}) => (
-        <>
-          <ul>
-            {jsxNotes(notes)}
-          </ul>
-          <button>Add Note</button>
-        </>
-      )}
-    </NotesContext.Consumer>
-  );
+  render() {
+    const folderId = this.props.match.params.folderId;
+    const { notes = [] } = this.context;
+    const notesToShow = this.getFolderNotes(notes, folderId);
+    return (
+      <>
+        <ul>
+          {this.jsxNotes(notesToShow)}
+        </ul>
+        <button>Add Note</button>
+      </>
+    );
+  }
 }
-
-NoteList.defaultProps = {
-  notes: [],
-};
 
 export default NoteList;

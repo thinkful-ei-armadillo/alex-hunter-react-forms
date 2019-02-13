@@ -2,27 +2,47 @@ import React from "react";
 import { Route, Link } from 'react-router-dom';
 import FolderList from './components/FolderList/FolderList';
 import NoteList from './components/NoteList/NoteList';
-import Note from './components/Note/Note';
-import Store from './dummy-store';
-import NotesContext from './NotesContext';
-import NoteContext from './NoteContext';
+import NoteFull from './components/Note/NoteFull';
+import NoteNav from './components/FolderList/NoteNav';
+import AppContext from './AppContext';
 
 class App extends React.Component {
-  state = Store;
+  state = {
+    notes: [],
+    folders: [],
+  };
 
-  getFolderNotes = (folderId) => {
-    return this.state.notes.filter(note => note.folderId === folderId);
-  }
 
-  getNoteById = (noteId) => {
-    return this.state.notes.find(note => note.id === noteId);
-  }
-
-  getFolderNameFromNoteId = (noteId) => {
-    const note = this.state.notes.find((n) => n.id === noteId );
-    const folder = this.state.folders.find((f) => f.id === note.folderId);
-
-    return folder.name;
+  BASE_URL = 'http://localhost:9090';
+  componentDidMount() {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }
+    Promise.all([
+      fetch(`${this.BASE_URL}/folders`, options),
+      fetch(`${this.BASE_URL}/notes`, options)
+    ])
+    .then( ([foldersResp, notesResp]) => {
+      if (!foldersResp.ok) {
+        return foldersResp.json().then(event => Promise.reject(event));
+      }
+      if (!notesResp.ok) {
+        return notesResp.json().then(event => Promise.reject(event));
+      }
+      return Promise.all([
+        foldersResp.json(),
+        notesResp.json()
+      ])
+    })
+    .then(([foldersJson, notesJson]) => {
+      this.setState({folders: foldersJson, notes: notesJson})
+    })
+    .catch(error => {
+      console.log(error.message);
+    })
   }
 
   renderMainComponent = () => {
@@ -30,35 +50,15 @@ class App extends React.Component {
       <>
         <Route
           exact path="/"
-          render={() => {
-            return (
-              <NotesContext.Provider
-                value={{ notes: this.state.notes }}>
-                <NoteList />
-              </NotesContext.Provider>
-            )}}
+          component={NoteList}
         />
         <Route
           path="/folder/:folderId"
-          render={(props) => {
-            return (
-              <NotesContext.Provider
-                value={{ notes: this.getFolderNotes(props.match.params.folderId) }}>
-                <NoteList />
-              </NotesContext.Provider>
-            );
-          }}
+          component={NoteList}
         />
         <Route
           path="/note/:noteId"
-          render={(props) => {
-            return (
-            <NoteContext.Provider
-              value = {{note : this.getNoteById(props.match.params.noteId), full : true}}>
-              <Note />
-            </NoteContext.Provider>
-            );
-        }}
+          component={NoteFull}
         />
       </>
     );
@@ -67,27 +67,25 @@ class App extends React.Component {
   renderNavigationComponent = () => {
     return (
       <>
-        <Route path="/note/:noteId" render={(props) => {
-          return (
-            <>
-              <p>{this.getFolderNameFromNoteId(props.match.params.noteId)}</p>
-              <button onClick={() => props.history.goBack()}>Go Back</button>
-            </>
-          )
-        }} />
-        <Route path="/folder/:folderId" render={() => {
-          return <FolderList folders={this.state.folders} />
-        }} />
-        <Route exact path="/" render={(props) => {
-          return <FolderList folders={this.state.folders} />
-        }} />
+        <Route 
+          path="/note/:noteId"
+          component={NoteNav}
+        />
+        <Route 
+          path="/folder/:folderId"
+          component={FolderList}
+        />
+        <Route 
+          exact path="/"
+          component={FolderList}
+        />
       </>
     );
   }
 
   render() {
     return (
-      <React.Fragment>
+      <AppContext.Provider value={ {folders: this.state.folders, notes: this.state.notes} }>
         <header id="SiteTitle" role="banner">
           <Link to='/'>Noteful</Link>
         </header>
@@ -97,8 +95,7 @@ class App extends React.Component {
         <main role="main">
           {this.renderMainComponent()}
         </main>
-
-      </React.Fragment>
+      </AppContext.Provider>
     );
   }
 }

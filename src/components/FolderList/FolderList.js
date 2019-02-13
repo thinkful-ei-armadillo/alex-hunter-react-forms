@@ -1,25 +1,31 @@
 import React from 'react';
 import Folder from '../Folder/Folder';
+import AppContext from '../../AppContext';
 
-function FolderList (props) {
+class FolderList extends React.Component {
+  static contextType = AppContext;
 
-  const jsxFolders = props.folders.map((folder) => {
+  getJsxFolders = (folders) => {
+    return folders.map((folder) => {
+      return (
+        <li key={folder.id}>
+          <Folder folder={folder} />
+        </li>
+      );
+    });
+  }
 
+  render() {
+    const { folders = [] } = this.context;
     return (
-      <li key={folder.id}>
-        <Folder folder={folder} />
-      </li>
+      <>
+        <ul>
+          {this.getJsxFolders(folders)}
+        </ul>
+        <button id="AddFolder">Add Folder</button>
+      </>
     );
-  });
-
-  return (
-    <React.Fragment>
-      <ul>
-        {jsxFolders}
-      </ul>
-      <button id="AddFolder">Add Folder</button>
-    </React.Fragment>
-  );
+  }
 }
 
 // FolderList.defaultProps = {
