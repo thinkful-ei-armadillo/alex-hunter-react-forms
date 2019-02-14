@@ -7,11 +7,12 @@ import NoteNav from './components/Nav/NoteNav';
 import AppContext from './AppContext';
 
 class App extends React.Component {
-  state = {
-    notes: [],
-    folders: [],
-  };
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      folders: [], notes: [], handleDelete: this.handleDelete
+    }
+  }
 
   BASE_URL = 'http://localhost:9090';
   componentDidMount() {
@@ -91,7 +92,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <AppContext.Provider value={ {folders: this.state.folders, notes: this.state.notes, handleDelete: this.handleDelete } }>
+      <AppContext.Provider value={ this.state }>
         <header id="SiteTitle" role="banner">
           <Link to='/'>Noteful</Link>
         </header>

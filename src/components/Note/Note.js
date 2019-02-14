@@ -19,6 +19,7 @@ class Note extends React.Component {
         return resp.json();
       })
       .then(() => {
+        if (this.props.history) { this.props.history.push('/') };
         this.context.handleDelete(this.props.id);
       })
       .catch(error => {
