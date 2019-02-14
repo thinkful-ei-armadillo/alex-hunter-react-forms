@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import NoteList from './components/Main/NoteList';
 import NoteFull from './components/Main/NoteFull';
 import FolderList from './components/Nav/FolderList';
@@ -7,12 +7,13 @@ import NoteNav from './components/Nav/NoteNav';
 import AppContext from './AppContext';
 import AddFolder from './components/Main/AddFolder';
 import AddNote from './components/Main/AddNote';
+import ErrorPage from './ErrorPage';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      folders: [], notes: [], handleDelete: this.handleDelete, addFolder: this.addFolder
+      folders: [], notes: [], handleDelete: this.handleDelete, addFolder: this.addFolder, addNote: this.addNote,
     }
   }
 
@@ -61,29 +62,39 @@ class App extends React.Component {
     })
   }
 
+  addNote = (note) => {
+    const notes = [...this.state.notes, note]
+    this.setState({
+      notes
+    })
+  }
+
   renderMainComponent = () => {
     return (
       <>
-        <Route
-          exact path="/"
-          component={NoteList}
-        />
-        <Route
-          path="/folder/:folderId"
-          component={NoteList}
-        />
-        <Route
-          path="/note/:noteId"
-          component={NoteFull}
-        />
-        <Route
-          path="/AddFolder"
-          component={AddFolder}
-        />
-        <Route
-          path="/AddNote"
-          component={AddNote}
-        />
+        <Switch>
+          <Route
+            exact path="/"
+            component={NoteList}
+          />
+          <Route
+            path="/folder/:folderId"
+            component={NoteList}
+          />
+          <Route
+            path="/note/:noteId"
+            component={NoteFull}
+          />
+          <Route
+            path="/AddFolder"
+            component={AddFolder}
+          />
+          <Route
+            path="/AddNote"
+            component={AddNote}
+          />
+          <Route render={() => <div>Something went wrong!</div>} />
+        </Switch>
       </>
     );
   }
@@ -91,26 +102,29 @@ class App extends React.Component {
   renderNavigationComponent = () => {
     return (
       <>
-        <Route 
-          path="/note/:noteId"
-          component={NoteNav}
-        />
-        <Route 
-          path="/folder/:folderId"
-          component={FolderList}
-        />
-        <Route 
-          exact path="/"
-          component={FolderList}
-        />
-        <Route
-          path="/AddFolder"
-          component={NoteNav}
-        />
-        <Route
-          path="/AddNote"
-          component={NoteNav}
-        />
+        <Switch>
+          <Route 
+            path="/note/:noteId"
+            component={NoteNav}
+          />
+          <Route 
+            path="/folder/:folderId"
+            component={FolderList}
+          />
+          <Route 
+            exact path="/"
+            component={FolderList}
+          />
+          <Route
+            path="/AddFolder"
+            component={NoteNav}
+          />
+          <Route
+            path="/AddNote"
+            component={NoteNav}
+          />
+          <Route component={NoteNav}/>
+        </Switch>
       </>
     );
   }
@@ -121,12 +135,14 @@ class App extends React.Component {
         <header id="SiteTitle" role="banner">
           <Link to='/'>Noteful</Link>
         </header>
-        <nav role="navigation">
-          {this.renderNavigationComponent()}
-        </nav>
-        <main role="main">
-          {this.renderMainComponent()}
-        </main>
+        <ErrorPage>
+          <nav role="navigation">
+            {this.renderNavigationComponent()}
+          </nav>
+          <main role="main">
+            {this.renderMainComponent()}
+          </main>
+        </ErrorPage>
       </AppContext.Provider>
     );
   }

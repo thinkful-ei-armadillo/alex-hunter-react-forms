@@ -4,14 +4,22 @@ import AppContext from '../../AppContext';
 class AddNote extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {  
             name: '',
             nameValid: false,
             nameValidationMessage: '',
-            description: '',
         }
+        this.contentInput = React.createRef();
+        this.folderInput = React.createRef();
     }
     static contextType = AppContext;
+
+    populateOptions () {
+        const folders = this.context.folders.map(folder => {
+            return <option key={folder.id} value={folder.id}>{folder.name}</option>
+        });
+        return folders;
+    }
 
     updateName(name) {
         this.setState({name}, () => {this.validateName(name)});
@@ -39,45 +47,42 @@ class AddNote extends React.Component {
         });
     }
 
+    updateContent(content) {
+        this.setState({content}, () => {this.validatecontent(content)});
+    }
+
     handleSubmit(event) {
-        // event.preventDefault();
-        // const { name } = this.state;
+        event.preventDefault();
 
-        // const options = {
-        //     method: 'POST',
-        //     headers: {
-        //         'content-type': 'application/json',
-        //     },
-        //     body: JSON.stringify({name})
-        // }
-         // fetch('http://localhost:9090/notes', options)
-        //     .then(resp => {
-        //         if (!resp.ok) {
-        //             throw new Error('Something went wrong')
-        //         }
-        //         return resp.json();
-        //     })
-        //     .then(respJson => {
-        //         this.context.addNote(respJson);
-        //         this.props.history.push(`/note/${respJson.id}`);
-        //     })
-        //     .catch(error => {
-        //         console.log(error.message);
-        //     })
-    }
+        const content = this.contentInput.current.value;
+        const folderId = this.folderInput.current.value;
+        const { name } = this.state;
+        const modified = new Date();
 
-    updateDescription(description) {
-        this.setState({description}, () => {this.validateName(description)});
-    }
-
-    populateOptions () {
-        const folders = this.context.folders.map(folder => {
-            return <option key={folder.id} value={folder.name}>{folder.name}</option>
-        });
-        console.log(folders);
-        return folders;
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({name, folderId, content, modified})
+        }
+        fetch('http://localhost:9090/notes', options)
+            .then(resp => {
+                if (!resp.ok) {
+                    throw new Error('Something went wrong')
+                }
+                return resp.json();
+            })
+            .then(respJson => {
+                this.context.addNote(respJson);
+                this.props.history.push(`/note/${respJson.id}`);
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
     }
     
+
     render() {
         return (
             <section>
@@ -85,11 +90,12 @@ class AddNote extends React.Component {
                 <form onSubmit={(event => this.handleSubmit(event))}>
                     <div>
                         <label htmlFor="note-name-input">Name</label>
-                        <input type="text" placeholder="Note name..." id="note-name-input" name="note-name-input" onChange={event => this.updateName(event.target.value)}/>
+                        <input type="text" placeholder="Note name..." id="note-name-input" name="note-name-input" value={this.state.name} onChange={event => this.updateName(event.target.value)}/>
                         {(!this.state.nameValid && this.state.nameValidationMessage) && <p className="error__message">{this.state.nameValidationMessage}</p>}
-                        <label htmlFor="description-input">Description</label>
-                        <textarea type="text" placeholder="Description" id="note-description-input" name="note-description-input" onChange={event => this.updateDescription(event.target.value)}></textarea>
-                        <select>{this.populateOptions()}</select>
+                        <label htmlFor="content-input">content</label>
+                        <textarea type="text" placeholder="content" id="note-content-input" name="note-content-input" ref={this.contentInput}></textarea>
+                        {(!this.state.contentValid && this.state.contentValidationMessage) && <p className="error__message">{this.state.contentValidationMessage}</p>}
+                        <select ref={this.folderInput}>{this.populateOptions()}</select>
                     </div>
                     <button type="submit" disabled={!this.state.nameValid}>Add Note</button>
                 </form>

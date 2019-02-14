@@ -2,9 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import { format } from 'date-fns';
+import PropTypes from 'prop-types';
 
 class Note extends React.Component {
   static contextType = AppContext;
+  static propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    modified: PropTypes.string
+  }
 
   handleDeleteNote = () => {
     fetch(`http://localhost:9090/notes/${this.props.id}`, {
