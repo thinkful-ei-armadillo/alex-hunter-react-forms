@@ -1,6 +1,7 @@
 import React from 'react';
 import Folder from '../Folder/Folder';
 import AppContext from '../../AppContext';
+import { Link } from 'react-router-dom';
 
 class FolderList extends React.Component {
   static contextType = AppContext;
@@ -22,7 +23,9 @@ class FolderList extends React.Component {
         <ul>
           {this.getJsxFolders(folders)}
         </ul>
-        <button id="AddFolder">Add Folder</button>
+        <Link to="/addfolder">
+          <button id="AddFolder">Add Folder</button>
+        </Link>
       </>
     );
   }

@@ -20,7 +20,7 @@ class NoteNav extends React.Component {
     render() {
       return (
         <>
-            <p>{this.getFolderNameFromNoteId(this.props.match.params.noteId)}</p>
+            <p>{this.props.match.params.noteId && this.getFolderNameFromNoteId(this.props.match.params.noteId)}</p>
             <BackButton history={this.props.history}/>
         </>
       );

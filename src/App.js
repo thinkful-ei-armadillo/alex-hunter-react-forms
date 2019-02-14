@@ -5,12 +5,13 @@ import NoteFull from './components/Main/NoteFull';
 import FolderList from './components/Nav/FolderList';
 import NoteNav from './components/Nav/NoteNav';
 import AppContext from './AppContext';
+import AddFolder from './components/Main/AddFolder';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      folders: [], notes: [], handleDelete: this.handleDelete
+      folders: [], notes: [], handleDelete: this.handleDelete, addFolder: this.addFolder
     }
   }
 
@@ -52,6 +53,13 @@ class App extends React.Component {
     });
   }
 
+  addFolder = (folder) => {
+    const folders = [...this.state.folders, folder]
+    this.setState({
+      folders
+    })
+  }
+
   renderMainComponent = () => {
     return (
       <>
@@ -66,6 +74,10 @@ class App extends React.Component {
         <Route
           path="/note/:noteId"
           component={NoteFull}
+        />
+        <Route
+          path="/addfolder"
+          component={AddFolder}
         />
       </>
     );
@@ -85,6 +97,10 @@ class App extends React.Component {
         <Route 
           exact path="/"
           component={FolderList}
+        />
+        <Route
+          path="/addfolder"
+          component={NoteNav}
         />
       </>
     );

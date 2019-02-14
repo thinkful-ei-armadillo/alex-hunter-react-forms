@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AppContext from '../../AppContext';
+import { format } from 'date-fns';
 
 class Note extends React.Component {
   static contextType = AppContext;
@@ -31,7 +32,7 @@ class Note extends React.Component {
     return (
       <div className="note">
         <h3><Link to={`/note/${this.props.id}`} >{this.props.name}</Link></h3>
-        <p>{this.props.modified}</p>
+        <p>{format(this.props.modified, 'Do MMM YYYY')}</p>
         <button className="delete" onClick={() => this.handleDeleteNote()}>Delete</button>
       </div>
     );

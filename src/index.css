@@ -108,3 +108,9 @@ nav ul {
 nav ul li a {
   color: white;
 }
+
+.error__message {
+  padding: 10px;
+  background-color: red;
+  color: white;
+}
