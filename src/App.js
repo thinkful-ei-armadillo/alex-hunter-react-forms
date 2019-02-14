@@ -6,6 +6,7 @@ import FolderList from './components/Nav/FolderList';
 import NoteNav from './components/Nav/NoteNav';
 import AppContext from './AppContext';
 import AddFolder from './components/Main/AddFolder';
+import AddNote from './components/Main/AddNote';
 
 class App extends React.Component {
   constructor(props) {
@@ -76,8 +77,12 @@ class App extends React.Component {
           component={NoteFull}
         />
         <Route
-          path="/addfolder"
+          path="/AddFolder"
           component={AddFolder}
+        />
+        <Route
+          path="/AddNote"
+          component={AddNote}
         />
       </>
     );
@@ -99,7 +104,11 @@ class App extends React.Component {
           component={FolderList}
         />
         <Route
-          path="/addfolder"
+          path="/AddFolder"
+          component={NoteNav}
+        />
+        <Route
+          path="/AddNote"
           component={NoteNav}
         />
       </>

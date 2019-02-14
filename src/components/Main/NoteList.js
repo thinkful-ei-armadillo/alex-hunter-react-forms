@@ -1,6 +1,7 @@
 import React from 'react';
 import Note from '../Note/Note';
 import AppContext from '../../AppContext';
+import { Link } from 'react-router-dom';
 
 class NoteList extends React.Component {
   static defaultProps = {
@@ -37,7 +38,7 @@ class NoteList extends React.Component {
         <ul>
           {this.jsxNotes(notesToShow)}
         </ul>
-        <button>Add Note</button>
+        <Link to='/AddNote'><button>Add Note</button></Link>
       </>
     );
   }
